@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For You ❤️</title>
-    <!-- Import Google Fonts: Dancing Script (Font Surat/Romantis) & Poppins -->
+    <!-- Import Google Fonts: Dancing Script & Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     
     <style>
@@ -16,34 +16,38 @@
         }
 
         body {
-            background-color: #fbf5ed;
+            background-color: #f4ebd8;
+            /* Tekstur Kertas Lembut */
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
             color: #4a3b32;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
         .container {
             width: 90%;
             max-width: 450px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
             padding: 25px;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(212, 165, 165, 0.2);
+            box-shadow: 0 10px 30px rgba(184, 91, 91, 0.15);
             text-align: center;
             position: relative;
             border: 1px solid #f3e5d8;
+            z-index: 10;
         }
 
-        /* Styling Font Romantis Tulisan Tangan */
         .handwriting {
             font-family: 'Dancing Script', cursive;
             color: #b85b5b;
         }
 
-        /* Bunga-bunga Transition Overlay */
+        /* TRANISI BUNGA JATUH DARI ATAS */
         #flower-loading {
             display: none;
             position: fixed;
@@ -51,29 +55,51 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(251, 245, 237, 0.95);
+            background: rgba(244, 235, 216, 0.98);
             z-index: 9999;
+            overflow: hidden;
             justify-content: center;
             align-items: center;
             flex-direction: column;
         }
 
-        .flower-spinner {
-            font-size: 50px;
-            animation: spin 2s infinite linear;
+        /* Container untuk bunga-bunga yang jatuh */
+        .falling-flowers {
+            position: absolute;
+            top: -100px;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.2); }
-            100% { transform: rotate(360deg) scale(1); }
+        .flower {
+            position: absolute;
+            font-size: 40px;
+            animation: fall linear forwards;
+            opacity: 0.9;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        /* Loading Text */
+        .loading-text {
+            font-size: 32px;
+            z-index: 10000;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
         }
 
         /* Panel Visibility */
-        .panel {
-            display: none;
-        }
-
+        .panel { display: none; }
         .panel.active {
             display: block;
             animation: fadeIn 0.8s ease-in-out;
@@ -84,32 +110,74 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Step 1: Lock Box */
-        .box-card {
-            background: #fff5f5;
-            padding: 30px;
-            border-radius: 15px;
-            border: 2px dashed #e8b4b4;
+        /* Step 1: Envelope & Wax Seal */
+        .envelope-container {
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.3s;
+            margin-bottom: 20px;
         }
 
-        .box-card:hover {
-            transform: scale(1.03);
+        .envelope-container:hover {
+            transform: scale(1.05);
+        }
+
+        .envelope {
+            width: 200px;
+            height: 140px;
+            background-color: #f9d5d5;
+            margin: 0 auto;
+            position: relative;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-top: 70px solid #f2c2c2;
+            border-right: 100px solid transparent;
+            border-left: 100px solid transparent;
+            z-index: 2;
+        }
+
+        /* Wax Seal (Cap Lilin) */
+        .wax-seal {
+            width: 45px;
+            height: 45px;
+            background: #b32d2d;
+            border-radius: 50%;
+            position: absolute;
+            z-index: 3;
+            box-shadow: inset 0 0 10px #701c1c, 0 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Dancing Script', cursive;
+            color: #ffcccc;
+            font-size: 20px;
+            border: 2px solid #8c2323;
         }
 
         /* Step 2: Letter */
         .letter-box {
-            background: #fffcf7;
-            padding: 20px;
+            background: #fffdf9;
+            padding: 25px;
             border-radius: 12px;
-            border: 1px solid #eee1d5;
+            border: 1px solid #e0c8b6;
             text-align: left;
             font-size: 18px;
-            line-height: 1.6;
+            line-height: 1.7;
             margin-bottom: 20px;
-            max-height: 250px;
+            max-height: 300px;
             overflow-y: auto;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.02);
+            /* Tekstur pada surat */
+            background-image: url('https://www.transparenttextures.com/patterns/cream-paper.png');
         }
 
         /* Buttons */
@@ -124,56 +192,43 @@
             transition: 0.3s;
             margin: 8px 0;
             width: 100%;
+            font-weight: 600;
         }
 
-        .btn:hover {
-            background-color: #c06c64;
-        }
+        .btn:hover { background-color: #c06c64; }
 
         /* Yes/No Panel */
         .btn-group {
             display: flex;
-            justify-content: space-around;
+            justify-content: space-between;
             gap: 15px;
             margin-top: 20px;
             position: relative;
-            min-height: 60px;
+            height: 50px; /* Fix height for absolute positioning later */
         }
 
-        .btn-yes {
-            background-color: #72b083;
-            width: 45%;
-        }
+        .btn-yes { background-color: #72b083; width: 48%; margin: 0; }
+        .btn-no { background-color: #e06c6c; width: 48%; margin: 0; position: static; transition: 0.2s ease-out;}
 
-        .btn-no {
-            background-color: #e06c6c;
-            width: 45%;
-            position: absolute;
-            right: 10px;
-        }
-
-        /* Step 4: 5 Options */
+        /* Step 4: Options */
         .options-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             margin-top: 15px;
         }
 
         .option-btn {
-            background-color: #f7e6e6;
+            background-color: #fdf5f5;
             color: #5a4040;
-            border: 1px solid #e0baba;
+            border: 1px solid #dfbaba;
             padding: 12px;
             border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
             transition: 0.2s;
         }
-
-        .option-btn:hover {
-            background-color: #ebd0d0;
-        }
+        .option-btn:hover { background-color: #f1d3d3; }
 
         /* Step 5: Date Time */
         input[type="datetime-local"] {
@@ -184,53 +239,56 @@
             border: 1px solid #d4a5a5;
             font-size: 15px;
             outline: none;
+            background: #fffdf9;
         }
 
         .final-title {
-            font-size: 38px;
+            font-size: 42px;
             margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Bunga Loading Transition Overlay -->
+    <!-- Animasi Bunga Jatuh & Loading -->
     <div id="flower-loading">
-        <div class="flower-spinner">🌸🌸<br>🌹🌺</div>
-        <p style="margin-top: 15px; color: #b85b5b; font-weight: 600;">Memuat Bunga...</p>
+        <div class="falling-flowers" id="flower-container"></div>
+        <p class="handwriting loading-text">Loading...</p>
     </div>
 
     <div class="container">
 
-        <!-- PANEL 1: Kotak Awal -->
+        <!-- PANEL 1: Amplop Cap Lilin -->
         <div id="panel-1" class="panel active">
-            <div class="box-card" onclick="triggerFlowerTransition(2)">
-                <div style="font-size: 40px; margin-bottom: 10px;">🔒🎁</div>
-                <h3 style="color: #a85858;">Ada pesan khusus buat kamu</h3>
-                <p style="font-size: 13px; color: #888; margin-top: 5px;">Klik kotak ini untuk membuka</p>
+            <div class="envelope-container" onclick="triggerFlowerTransition(2)">
+                <div class="envelope">
+                    <div class="wax-seal">S</div>
+                </div>
             </div>
+            
+            <!-- [BAGIAN 1: TEKS PEMBUKA] -->
+            <h2 class="handwriting" style="font-size: 28px; margin-top: 15px;">Hi Sheikha,</h2>
+            <p style="color: #8a6a57; font-size: 15px;">This is a special message for you.</p>
+            <p style="font-size: 12px; color: #a38c7f; margin-top: 15px;">(Click the envelope to open)</p>
         </div>
 
         <!-- PANEL 2: Kartu Ucapan / Surat -->
         <div id="panel-2" class="panel">
-            <h2 class="handwriting" style="font-size: 32px; margin-bottom: 10px;">From me to you...</h2>
-            
-            <!-- [BAGIAN 1: SURAT / UCAPAN] - BISA DIUBAH TEKS DI DALAM SINI -->
+            <!-- [BAGIAN 2: ISI SURAT] -->
             <div class="letter-box handwriting">
-                Halo manis,<br><br>
-                Terima kasih ya sudah selalu ada dan bikin hari-hariku jadi lebih berwarna. Setiap kali mikirin kamu, rasanya selalu bikin senyum-senyum sendiri.<br><br>
-                Aku bikin ini khusus buat kamu. Tetap jadi orang yang penuh kehangatan ya! ❤️
+                Halo cantikku,<br><br>
+                Udah lama ya  kita ga ketemu lagi. Aku kangen banget tau🥺, aku iri liat mereka bisa main sama kamu.<br><br>
+                Aku bikin ini khusus buat kamu. Tetap jadi orang kesayanganku ya! ❤️
             </div>
-
             <button class="btn" onclick="triggerFlowerTransition(3)">Lanjut ❤️</button>
         </div>
 
         <!-- PANEL 3: Pertanyaan Iya / Tidak -->
         <div id="panel-3" class="panel">
-            <!-- [BAGIAN 2: PERTANYAAN IYA/TIDAK] - BISA DIUBAH -->
-            <h3 style="color: #634343; margin-bottom: 20px;">Kamu mau ga pergi luangin waktu jalan bareng aku? 🥺</h3>
+            <!-- [BAGIAN 3: PERTANYAAN NGE-DATE] -->
+            <h3 style="color: #634343; margin-bottom: 20px;">Kamu mau ga luangin waktu buat jalan bareng aku? 🥺</h3>
             
-            <div class="btn-group">
+            <div class="btn-group" id="btn-group-yesno">
                 <button class="btn btn-yes" onclick="triggerFlowerTransition(4)">Iya Mau! 🥰</button>
                 <button id="btn-no" class="btn btn-no" onmouseover="moveNoButton()" onclick="moveNoButton()">Gak Ah 😜</button>
             </div>
@@ -239,13 +297,12 @@
         <!-- PANEL 4: 5 Pilihan -->
         <div id="panel-4" class="panel">
             <h3 style="color: #634343; margin-bottom: 10px;">Asyik! Kamu mau kita ke mana nih? ✨</h3>
-            <p style="font-size: 13px; color: #777;">Pilih salah satu ya:</p>
             
-            <!-- [BAGIAN 3: 5 PILIHAN] - BISA DIUBAH NAMA-NAMA PILIHANNYA -->
+            <!-- [BAGIAN 4: 5 PILIHAN TEMPAT/AKTIVITAS] -->
             <div class="options-list">
                 <button class="option-btn" onclick="selectOption('Nonton Bioskop')">🎬 Nonton Bioskop</button>
                 <button class="option-btn" onclick="selectOption('Nongkrong di Coffee Shop')">☕ Coffee Shop Santai</button>
-                <button class="option-btn" onclick="selectOption('Makan Enak / Dinner')">🍕 Dinner / Culinary Date</button>
+                <button class="option-btn" onclick="selectOption('Makan Enak / Dinner')">🍕 Dinner Romantis</button>
                 <button class="option-btn" onclick="selectOption('Jalan-jalan ke Museum')">🖼️ Museum / Art Gallery</button>
                 <button class="option-btn" onclick="selectOption('Keliling Kota / Random Drive')">🚗 Keliling Kota Santai</button>
             </div>
@@ -254,7 +311,7 @@
         <!-- PANEL 5: Tanggal, Bulan, Jam -->
         <div id="panel-5" class="panel">
             <h3 style="color: #634343;">Kapan kamu selang waktunya? 📅</h3>
-            <p style="font-size: 13px; color: #777; margin-top: 5px;">Pilih tanggal, bulan, dan jamnya ya!</p>
+            <p style="font-size: 13px; color: #777; margin-top: 5px;">Tentukan tanggal dan jamnya ya!</p>
             
             <input type="datetime-local" id="datetime-picker">
             
@@ -265,9 +322,9 @@
         <div id="panel-6" class="panel">
             <div style="font-size: 50px; margin-bottom: 10px;">💖</div>
             
-            <!-- [BAGIAN 4: KALIMAT TERAKHIR] - BISA DIUBAH -->
+            <!-- [BAGIAN 5: KALIMAT PENUTUP TERAKHIR] -->
             <h2 class="handwriting final-title">I will always love you</h2>
-            <p class="handwriting" style="font-size: 24px; color: #888; margin-top: 5px;">From, your favorite person</p>
+            <p class="handwriting" style="font-size: 24px; color: #888; margin-top: 5px;">See you very soon!</p>
             
             <div id="summary-text" style="margin-top: 20px; font-size: 14px; color: #555; background: #fff5f5; padding: 12px; border-radius: 10px;"></div>
         </div>
@@ -277,9 +334,41 @@
     <script>
         let chosenOption = "";
 
-        // Fungsi Transisi Bunga Bunga
+        // Fungsi Create Animasi Bunga Jatuh
+        function createFallingFlowers() {
+            const container = document.getElementById('flower-container');
+            container.innerHTML = ''; // Bersihkan bunga sebelumnya
+            
+            const flowers = ['🌹', '🌺', '🌸', '🌷', '💮'];
+            const flowerCount = 35; // Jumlah bunga yang jatuh
+
+            for (let i = 0; i < flowerCount; i++) {
+                let flower = document.createElement('div');
+                flower.classList.add('flower');
+                flower.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+                
+                // Posisi Acak Horizontal
+                flower.style.left = Math.random() * 100 + 'vw';
+                
+                // Durasi & Delay Acak agar natural
+                let duration = Math.random() * 2 + 1.5; // 1.5s - 3.5s
+                let delay = Math.random() * 1; // 0s - 1s
+                
+                flower.style.animationDuration = duration + 's';
+                flower.style.animationDelay = delay + 's';
+                
+                // Ukuran Acak
+                flower.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                
+                container.appendChild(flower);
+            }
+        }
+
+        // Fungsi Transisi Panel
         function triggerFlowerTransition(nextPanelId) {
             const loading = document.getElementById('flower-loading');
+            
+            createFallingFlowers(); // Buat bunga baru tiap transisi
             loading.style.display = 'flex';
 
             setTimeout(() => {
@@ -289,41 +378,75 @@
                 // Tampilkan panel tujuan
                 document.getElementById('panel-' + nextPanelId).classList.add('active');
                 
-                // Sembunyikan loading bunga
+                // Sembunyikan loading setelah bunga selesai jatuh
                 loading.style.display = 'none';
-            }, 1200); // Durasi animasi bunga (1.2 detik)
+            }, 2500); // Durasi loading disesuaikan dengan animasi bunga (2.5 detik)
         }
 
-        // Fungsi Tombol 'Tidak' Kabur saat Didekati/Klik
+        // Fungsi Tombol 'Tidak' Kabur
+        let noBtnMoved = false;
         function moveNoButton() {
             const noBtn = document.getElementById('btn-no');
+            const group = document.getElementById('btn-group-yesno');
             
-            // Dapatkan area acak
-            const x = Math.floor(Math.random() * 200) - 100;
-            const y = Math.floor(Math.random() * 200) - 100;
+            // Ubah position menjadi absolute saat pertama kali disentuh
+            if (!noBtnMoved) {
+                noBtn.style.position = 'absolute';
+                noBtnMoved = true;
+            }
+            
+            // Dapatkan batas maksimal pergerakan agar tidak keluar layar
+            const maxX = window.innerWidth - noBtn.offsetWidth - 50;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 50;
+            
+            // Acak posisi relatif terhadap layar
+            const randomX = Math.floor(Math.random() * (maxX - (-100))) - 100;
+            const randomY = Math.floor(Math.random() * (maxY - (-200))) - 200;
 
-            noBtn.style.transform = `translate(${x}px, ${y}px)`;
+            noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
         }
 
-        // Fungsi Pilih 1 dari 5 pilihan
+        // Simpan Pilihan
         function selectOption(optionName) {
             chosenOption = optionName;
             triggerFlowerTransition(5);
         }
 
-        // Fungsi Selesai Pilih Tanggal & Jam
+        // Validasi & Kirim ke WhatsApp
         function finishSelection() {
             const dateTimeVal = document.getElementById('datetime-picker').value;
             if(!dateTimeVal) {
-                alert('Pilih tanggal dan jamnya dulu yaa!');
+                alert('Pilih tanggal dan jamnya dulu yaa, cantikk!');
                 return;
             }
 
-            const formattedDate = new Date(dateTimeVal).toLocaleString('id-ID', {
+            const selectedDate = new Date(dateTimeVal);
+            
+            // Validasi Khusus: 2 - 5 November 2026
+            const startDate = new Date('2026-11-02T00:00:00');
+            const endDate = new Date('2026-11-05T23:59:59');
+
+            if (selectedDate >= startDate && selectedDate <= endDate) {
+                alert('Seriusan kamu mau di tanggal segitu? 🥺 Tanggal itu kan kita pjj, boleh digeser ke tanggal lain ga sayang? 💕');
+                return; // Stop eksekusi agar dia milih ulang
+            }
+
+            // Jika tanggal aman, format tanggalnya
+            const formattedDate = selectedDate.toLocaleString('id-ID', {
                 dateStyle: 'full',
                 timeStyle: 'short'
             });
 
+            // ==========================================
+            // [BAGIAN 6: NOMOR WHATSAPP KAMU]
+            // Ubah nomor di bawah ini dengan nomor WA kamu. 
+            // Gunakan 62 (bukan 0). Contoh: "6281234567890"
+            const nomorWA = "6281770596075"; 
+            // ==========================================
+
+            const pesan = `Halo! Aku udah pilih rencananya nih 🥰:\n\n📍 *Pilihan:* ${chosenOption}\n⏰ *Waktu:* ${formattedDate}\n\nSampai ketemu ya! ❤️`;
+
+            // Tampilkan di layar terakhir
             document.getElementById('summary-text').innerHTML = `
                 <b>Rencana Kita:</b><br>
                 📍 <i>${chosenOption}</i><br>
@@ -331,6 +454,12 @@
             `;
 
             triggerFlowerTransition(6);
+
+            // Buka WhatsApp Otomatis setelah animasi selesai (2.5 detik)
+            setTimeout(() => {
+                const urlWA = `https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodeURIComponent(pesan)}`;
+                window.open(urlWA, '_blank');
+            }, 2700);
         }
     </script>
 </body>
