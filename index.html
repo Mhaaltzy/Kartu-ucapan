@@ -404,17 +404,14 @@
             // Terapkan efek transisi
             noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
         }
-        
-            
-            
 
+        
         // Simpan Pilihan
         function selectOption(optionName) {
             chosenOption = optionName;
             triggerFlowerTransition(5);
         }
-
-        // Validasi & Kirim ke WhatsApp
+        // Fungsi Selesai Pilih Tanggal & Jam -> Kirim Otomatis ke Email Kamu
         function finishSelection() {
             const dateTimeVal = document.getElementById('datetime-picker').value;
             if(!dateTimeVal) {
@@ -429,40 +426,42 @@
             const endDate = new Date('2026-11-05T23:59:59');
 
             if (selectedDate >= startDate && selectedDate <= endDate) {
-                alert('Seriusan kamu mau di tanggal segitu? 🥺 Tanggal itu kan kita pjj, boleh digeser ke tanggal lain ga sayang? 💕');
-                return; // Stop eksekusi agar dia milih ulang
+                alert('Seriusan kamu mau di tanggal segitu? 🥺 Tanggal itu aku takut sibuk, boleh digeser ke tanggal lain ga manis? 💕');
+                return;
             }
 
-            // Jika tanggal aman, format tanggalnya
             const formattedDate = selectedDate.toLocaleString('id-ID', {
                 dateStyle: 'full',
                 timeStyle: 'short'
             });
 
-            // ==========================================
-            // [BAGIAN 6: NOMOR WHATSAPP KAMU]
-            // Ubah nomor di bawah ini dengan nomor WA kamu. 
-            // Gunakan 62 (bukan 0). Contoh: "6281234567890"
-            const nomorWA = "6281770596075"; 
-            // ==========================================
-
-            const pesan = `Halo! Aku udah pilih rencananya nih 🥰:\n\n📍 *Pilihan:* ${chosenOption}\n⏰ *Waktu:* ${formattedDate}\n\nSampai ketemu ya! ❤️`;
-
-            // Tampilkan di layar terakhir
+            // Tampilkan rangkuman di halaman terakhir Sheikha
             document.getElementById('summary-text').innerHTML = `
                 <b>Rencana Kita:</b><br>
                 📍 <i>${chosenOption}</i><br>
                 ⏰ <i>${formattedDate}</i>
             `;
 
-            triggerFlowerTransition(6);
+            // GANTI DENGAN ALAMAT EMAIL KAMU
+            const emailKamu = "akmaladji.83@gmail.com"; 
 
-            // Buka WhatsApp Otomatis setelah animasi selesai (2.5 detik)
-            setTimeout(() => {
-                const urlWA = `https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodeURIComponent(pesan)}`;
-                window.open(urlWA, '_blank');
-            }, 2700);
-        }
+            // Kirim data secara rahasia ke email kamu di background
+            fetch(`https://formsubmit.co/ajax/${emailKamu}`, {
+                method: "POST",
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    Penerima: "Sheikha",
+                    Pilihan_Tempat: chosenOption,
+                    Tanggal_dan_Waktu: formattedDate
+                })
+            });
+
+            // Langsung pindah ke halaman penutup romantis tanpa buka app luar
+            triggerFlowerTransition(6);
+        }     
     </script>
 </body>
 </html>
