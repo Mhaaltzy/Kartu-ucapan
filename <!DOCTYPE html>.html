@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You ❤️</title>
+    <!-- Import Google Fonts: Dancing Script (Font Surat/Romantis) & Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #fbf5ed;
+            color: #4a3b32;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(212, 165, 165, 0.2);
+            text-align: center;
+            position: relative;
+            border: 1px solid #f3e5d8;
+        }
+
+        /* Styling Font Romantis Tulisan Tangan */
+        .handwriting {
+            font-family: 'Dancing Script', cursive;
+            color: #b85b5b;
+        }
+
+        /* Bunga-bunga Transition Overlay */
+        #flower-loading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(251, 245, 237, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .flower-spinner {
+            font-size: 50px;
+            animation: spin 2s infinite linear;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Panel Visibility */
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Step 1: Lock Box */
+        .box-card {
+            background: #fff5f5;
+            padding: 30px;
+            border-radius: 15px;
+            border: 2px dashed #e8b4b4;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .box-card:hover {
+            transform: scale(1.03);
+        }
+
+        /* Step 2: Letter */
+        .letter-box {
+            background: #fffcf7;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #eee1d5;
+            text-align: left;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        /* Buttons */
+        .btn {
+            background-color: #d98880;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 8px 0;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #c06c64;
+        }
+
+        /* Yes/No Panel */
+        .btn-group {
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            margin-top: 20px;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .btn-yes {
+            background-color: #72b083;
+            width: 45%;
+        }
+
+        .btn-no {
+            background-color: #e06c6c;
+            width: 45%;
+            position: absolute;
+            right: 10px;
+        }
+
+        /* Step 4: 5 Options */
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .option-btn {
+            background-color: #f7e6e6;
+            color: #5a4040;
+            border: 1px solid #e0baba;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .option-btn:hover {
+            background-color: #ebd0d0;
+        }
+
+        /* Step 5: Date Time */
+        input[type="datetime-local"] {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 1px solid #d4a5a5;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .final-title {
+            font-size: 38px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Bunga Loading Transition Overlay -->
+    <div id="flower-loading">
+        <div class="flower-spinner">🌸🌸<br>🌹🌺</div>
+        <p style="margin-top: 15px; color: #b85b5b; font-weight: 600;">Memuat Bunga...</p>
+    </div>
+
+    <div class="container">
+
+        <!-- PANEL 1: Kotak Awal -->
+        <div id="panel-1" class="panel active">
+            <div class="box-card" onclick="triggerFlowerTransition(2)">
+                <div style="font-size: 40px; margin-bottom: 10px;">🔒🎁</div>
+                <h3 style="color: #a85858;">Ada pesan khusus buat kamu</h3>
+                <p style="font-size: 13px; color: #888; margin-top: 5px;">Klik kotak ini untuk membuka</p>
+            </div>
+        </div>
+
+        <!-- PANEL 2: Kartu Ucapan / Surat -->
+        <div id="panel-2" class="panel">
+            <h2 class="handwriting" style="font-size: 32px; margin-bottom: 10px;">From me to you...</h2>
+            
+            <!-- [BAGIAN 1: SURAT / UCAPAN] - BISA DIUBAH TEKS DI DALAM SINI -->
+            <div class="letter-box handwriting">
+                Halo manis,<br><br>
+                Terima kasih ya sudah selalu ada dan bikin hari-hariku jadi lebih berwarna. Setiap kali mikirin kamu, rasanya selalu bikin senyum-senyum sendiri.<br><br>
+                Aku bikin ini khusus buat kamu. Tetap jadi orang yang penuh kehangatan ya! ❤️
+            </div>
+
+            <button class="btn" onclick="triggerFlowerTransition(3)">Lanjut ❤️</button>
+        </div>
+
+        <!-- PANEL 3: Pertanyaan Iya / Tidak -->
+        <div id="panel-3" class="panel">
+            <!-- [BAGIAN 2: PERTANYAAN IYA/TIDAK] - BISA DIUBAH -->
+            <h3 style="color: #634343; margin-bottom: 20px;">Kamu mau ga pergi luangin waktu jalan bareng aku? 🥺</h3>
+            
+            <div class="btn-group">
+                <button class="btn btn-yes" onclick="triggerFlowerTransition(4)">Iya Mau! 🥰</button>
+                <button id="btn-no" class="btn btn-no" onmouseover="moveNoButton()" onclick="moveNoButton()">Gak Ah 😜</button>
+            </div>
+        </div>
+
+        <!-- PANEL 4: 5 Pilihan -->
+        <div id="panel-4" class="panel">
+            <h3 style="color: #634343; margin-bottom: 10px;">Asyik! Kamu mau kita ke mana nih? ✨</h3>
+            <p style="font-size: 13px; color: #777;">Pilih salah satu ya:</p>
+            
+            <!-- [BAGIAN 3: 5 PILIHAN] - BISA DIUBAH NAMA-NAMA PILIHANNYA -->
+            <div class="options-list">
+                <button class="option-btn" onclick="selectOption('Nonton Bioskop')">🎬 Nonton Bioskop</button>
+                <button class="option-btn" onclick="selectOption('Nongkrong di Coffee Shop')">☕ Coffee Shop Santai</button>
+                <button class="option-btn" onclick="selectOption('Makan Enak / Dinner')">🍕 Dinner / Culinary Date</button>
+                <button class="option-btn" onclick="selectOption('Jalan-jalan ke Museum')">🖼️ Museum / Art Gallery</button>
+                <button class="option-btn" onclick="selectOption('Keliling Kota / Random Drive')">🚗 Keliling Kota Santai</button>
+            </div>
+        </div>
+
+        <!-- PANEL 5: Tanggal, Bulan, Jam -->
+        <div id="panel-5" class="panel">
+            <h3 style="color: #634343;">Kapan kamu selang waktunya? 📅</h3>
+            <p style="font-size: 13px; color: #777; margin-top: 5px;">Pilih tanggal, bulan, dan jamnya ya!</p>
+            
+            <input type="datetime-local" id="datetime-picker">
+            
+            <button class="btn" onclick="finishSelection()">Kirim Jadwal ✨</button>
+        </div>
+
+        <!-- PANEL 6: Halaman Terakhir -->
+        <div id="panel-6" class="panel">
+            <div style="font-size: 50px; margin-bottom: 10px;">💖</div>
+            
+            <!-- [BAGIAN 4: KALIMAT TERAKHIR] - BISA DIUBAH -->
+            <h2 class="handwriting final-title">I will always love you</h2>
+            <p class="handwriting" style="font-size: 24px; color: #888; margin-top: 5px;">From, your favorite person</p>
+            
+            <div id="summary-text" style="margin-top: 20px; font-size: 14px; color: #555; background: #fff5f5; padding: 12px; border-radius: 10px;"></div>
+        </div>
+
+    </div>
+
+    <script>
+        let chosenOption = "";
+
+        // Fungsi Transisi Bunga Bunga
+        function triggerFlowerTransition(nextPanelId) {
+            const loading = document.getElementById('flower-loading');
+            loading.style.display = 'flex';
+
+            setTimeout(() => {
+                // Sembunyikan semua panel
+                document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+                
+                // Tampilkan panel tujuan
+                document.getElementById('panel-' + nextPanelId).classList.add('active');
+                
+                // Sembunyikan loading bunga
+                loading.style.display = 'none';
+            }, 1200); // Durasi animasi bunga (1.2 detik)
+        }
+
+        // Fungsi Tombol 'Tidak' Kabur saat Didekati/Klik
+        function moveNoButton() {
+            const noBtn = document.getElementById('btn-no');
+            
+            // Dapatkan area acak
+            const x = Math.floor(Math.random() * 200) - 100;
+            const y = Math.floor(Math.random() * 200) - 100;
+
+            noBtn.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        // Fungsi Pilih 1 dari 5 pilihan
+        function selectOption(optionName) {
+            chosenOption = optionName;
+            triggerFlowerTransition(5);
+        }
+
+        // Fungsi Selesai Pilih Tanggal & Jam
+        function finishSelection() {
+            const dateTimeVal = document.getElementById('datetime-picker').value;
+            if(!dateTimeVal) {
+                alert('Pilih tanggal dan jamnya dulu yaa!');
+                return;
+            }
+
+            const formattedDate = new Date(dateTimeVal).toLocaleString('id-ID', {
+                dateStyle: 'full',
+                timeStyle: 'short'
+            });
+
+            document.getElementById('summary-text').innerHTML = `
+                <b>Rencana Kita:</b><br>
+                📍 <i>${chosenOption}</i><br>
+                ⏰ <i>${formattedDate}</i>
+            `;
+
+            triggerFlowerTransition(6);
+        }
+    </script>
+</body>
+</html>
