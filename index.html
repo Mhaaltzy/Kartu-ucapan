@@ -260,7 +260,7 @@
 
         <!-- PANEL 1: Amplop Cap Lilin -->
         <div id="panel-1" class="panel active">
-            <div class="envelope-container" onclick="triggerFlowerTransition(2)">
+            <div class="envelope-container" onclick="playMusic(); triggerFlowerTransition(2);">
                 <div class="envelope">
                     <div class="wax-seal">S</div>
                 </div>
@@ -464,8 +464,17 @@
 
             // Langsung pindah ke halaman penutup romantis
             triggerFlowerTransition(6);
+        } 
+
+        // Fungsi untuk memutar musik saat amplop diklik
+        function playMusic() {
+            const music = document.getElementById('bg-music');
+            music.play().catch(err => console.log(err));
         }
-       
     </script>
+
+    <!-- Tag pemutar lagu -->
+    <audio id="bg-music" src="lagu.mp3" loop></audio>
+
 </body>
 </html>
