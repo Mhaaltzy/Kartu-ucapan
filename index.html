@@ -411,7 +411,8 @@
             chosenOption = optionName;
             triggerFlowerTransition(5);
         }
-        // Fungsi Selesai Pilih Tanggal & Jam -> Kirim Otomatis ke Email Kamu
+
+        // Fungsi Selesai Pilih Tanggal & Jam -> Kirim Otomatis via Web3Forms
         function finishSelection() {
             const dateTimeVal = document.getElementById('datetime-picker').value;
             if(!dateTimeVal) {
@@ -442,27 +443,29 @@
                 ⏰ <i>${formattedDate}</i>
             `;
 
-            // GANTI DENGAN ALAMAT EMAIL KAMU
-            const emailKamu = "akmaladji.83@gmail.com"; 
+            // ⚠️ GANTI TEKS DI BAWAH INI DENGAN ACCESS KEY DARI WEB3FORMS
+            const web3FormsAccessKey = "a1e605b9-b314-4a4d-a8e2-3c4ed104f93e"; 
 
-            // Kirim data secara rahasia ke email kamu di background
-            fetch(`https://formsubmit.co/ajax/${emailKamu}`, {
+            // Kirim data rahasia ke email secara instan
+            fetch("https://api.web3forms.com/submit", {
                 method: "POST",
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
                 body: JSON.stringify({
-                    Penerima: "Sheikha",
+                    access_key: web3FormsAccessKey,
+                    subject: "Sheikha Sudah Pilih Jadwal Date! 💕",
+                    from_name: "Kartu Ucapan Web",
                     Pilihan_Tempat: chosenOption,
-                    Tanggal_dan_Waktu: formattedDate,
-                    _captcha: "false"
+                    Tanggal_dan_Waktu: formattedDate
                 })
             });
 
-            // Langsung pindah ke halaman penutup romantis tanpa buka app luar
+            // Langsung pindah ke halaman penutup romantis
             triggerFlowerTransition(6);
-        }     
+        }
+       
     </script>
 </body>
 </html>
